@@ -10,20 +10,22 @@ def ode_source_term(u):
 
 def residual_discrete_eq(u):
     """Return the residual of the discrete eq. with u inserted."""
-    R = (u(t+1) - 2*u(t) + u(t-1))/(dt**2)
+    num = DtDt(u, dt) 
+    R = sym.diff(u(t), t, t) - num
     return sym.simplify(R)
 
 def residual_discrete_eq_step1(u):
     """Return the residual of the discrete eq. at the first
     step with u inserted."""
-    R = (u(1) - 2*u(0) + u(-1))/(dt**2)
+    f_0 = (2*u(t).subs(t,1) - 4*I)/(dt**2) + w**2*I
+    R = 0
     return sym.simplify(R)
 
 def DtDt(u, dt):
     """Return 2nd-order finite difference for u_tt.
     u is a symbolic Python function of t.
     """
-    return (u(t+1) - 2*u(t) + u(t-1))/(dt**2)
+    return (u(t+dt) - 2*u(t) + u(t-dt))/(dt**2)
 
 def main(u):
     """
