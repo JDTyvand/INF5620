@@ -17,7 +17,7 @@ def residual_discrete_eq(u):
 def residual_discrete_eq_step1(u):
     """Return the residual of the discrete eq. at the first
     step with u inserted."""
-    f_0 = (2*u(t).subs(t,1) - 4*I)/(dt**2) + w**2*I
+    print f
     R = 0
     return sym.simplify(R)
 
