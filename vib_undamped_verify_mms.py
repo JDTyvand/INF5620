@@ -10,15 +10,14 @@ def ode_source_term(u):
 
 def residual_discrete_eq(u):
     """Return the residual of the discrete eq. with u inserted."""
-    num = DtDt(u, dt) 
-    R = sym.diff(u(t), t, t) - num
+    num = DtDt(u, dt) + w**2*u(t)
+    R = ode_source_term(u) - num
     return sym.simplify(R)
 
 def residual_discrete_eq_step1(u):
     """Return the residual of the discrete eq. at the first
     step with u inserted."""
-    print f
-    R = 0
+    R = ode_source_term(u).subs(t, dt) - num
     return sym.simplify(R)
 
 def DtDt(u, dt):
@@ -36,10 +35,12 @@ def main(u):
     """
     print '=== Testing exact solution: %s ===' % u
     print "Initial conditions u(0)=%s, u'(0)=%s:" % (u(t).subs(t, 0), sym.diff(u(t), t).subs(t, 0))
+    print u(t).subs(t, 0)
 
     # Method of manufactured solution requires fitting f
     global f  # source term in the ODE
     f = sym.simplify(ode_source_term(u))
+    print f.subs(t, 0)
 
     # Residual in discrete equations (should be 0)
     print 'residual step1:', residual_discrete_eq_step1(u)
