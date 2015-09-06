@@ -64,6 +64,9 @@ def simulate(
     return x, y, theta, t
 
 def pure_vertical():
+    """
+    Function for solving pure vertical motion of the pendulum.
+    """
     beta = 0.9
     omega = sqrt(beta/(1-beta))
     P = 2*pi/omega
@@ -89,18 +92,26 @@ def pure_vertical():
     assert err < tol
 
 def zero_test():
+    """
+    Function for testing that starting from the equilibrium state
+    Theta=0 and epsilon=0 will give x=y=0 for all times. 
+    """
     x, y , theta, t = simulate(Theta=0)
     if abs(x.max()) > 0 or abs(y.max()) > 0:
 		  print "Error in the numerical scheme!"
     else:
 		  print "Theta = 0 and epsilon = 0 gives x = y = 0 for all times, as intended."
 
-def demo(beta=0.9, Theta=60, num_periods=3):
-    x, y, theta, t = simulate(beta=beta, Theta=Theta, num_periods=num_periods, time_steps_per_period=600, plot=True)
+def demo(beta, Theta):
+    """
+    Demo function testing 
+    """
+    x, y, theta, t = simulate(beta=beta, Theta=Theta, num_periods=3, time_steps_per_period=600, plot=True)
+
 def main():
-    simulate()
-    simulate(Theta=8)
-    zero_test()
-    pure_vertical()
-    demo()
+    simulate()            #Runs the default simulate function
+    simulate(Theta=8)     #Runs the simulate function with Theta=8, to show the plot of elastic vs. non-elastic
+    zero_test()           #Runs the test function for the equilibrium state
+    pure_vertical()       #Runs the test function for pure vertical motion
+    demo(0.9, 60)         #Runs the demo function with beta=0.9 and Theta=60
 main()
