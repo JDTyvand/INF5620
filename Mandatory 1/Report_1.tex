@@ -1,0 +1,112 @@
+\documentclass[a4paper,english,11pt,twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{pstricks}
+\usepackage{subfigure}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{gensymb}
+\usepackage{preamble}
+\restylefloat{table}
+\renewcommand{\arraystretch}{1.5}
+ \newcommand{\tab}{\hspace*{2em}}
+
+
+\date{\today}
+\title{Mandatory Assignment 1}
+\author{Jørgen D. Tyvand}
+
+\begin{document}
+\maketitle
+\newpage
+
+\section*{Exercise 1}
+We consider the ODE problem\\
+\\
+$u'' + \omega^2u = f(t),\tab u(0) = I, u'(0) = V, t \in (0,T]$\\
+\section*{a)}
+The first task is to derive the discretized equation for the first time step $(u^1).$\\
+We start by discretizing the general problem using central difference:\\
+\\
+$\frac{u^{n+1} - 2u^n + u^{n-1}}{\Delta t^2} + \omega^2u^n = f$
+$u^{n+1} = (2 - \omega\Delta t^2)u^n - u^{n-1} + \Delta t^2f$\\
+\\
+We use a central difference for the initial condition:\\
+\\
+$\frac{u^1 - u^{-1}}{2\Delta t} = V$
+$u^{-1} = u^1 - 2\Delta t V$\\
+\\
+Inserted into the scheme for n = 0:\\
+\\
+$u^1 = (2 - \omega\Delta t^2)u^0 - u^1 + 2\Delta t V + \Delta t^2f$\\
+\\
+Giving, after a quick rearrangement:\\
+\\
+$u^1 = (1 - \frac{\omega\Delta t^2}{2})u^0  + \Delta t V +\frac{ \Delta t^2f}{2}$\\
+\newpage
+\section*{b)}
+We are given the manufactured solution $u_e(x,t) = ct + d.$\\
+Using the initial conditions of the ODE problem, we find the restrictions on c and d:\\
+\\
+$u_e(0) = d = I\tab u'_e(0) = c = V$\\
+\\
+We then find f by inserting $u_e$ into the ODE problem, noting that $u''_e = 0$:\\
+\\
+$f = \omega^2(ct + d) = \omega^2(Vt + I)$\\
+\\
+We then want to show that $[D_tD_t t]^n = 0$, so we use the central differencing scheme employed earlier, and insert for t:\\
+\\
+$\frac{t^{n+1} - 2t^n + t^{n-1}}{\Delta t^2} = \frac{(n+1)\Delta t - 2n\Delta t + (n-1)\Delta t}{\Delta t^2} = \frac{n\Delta t - \Delta t - 2n\Delta t + n\Delta t - \Delta t}{\Delta t^2} = \frac{2n - 2n}{\Delta t^2} = 0$\\
+\\
+We finally want to show that $u_e$ is a perfect solution, so we use the fact given in the exercise, $[D_tD_t(ct+d)]^n = 0$ and get:\\
+\\
+$[D_tD_t(ct+d)]^n + \omega^2(ct + d) = f^n$\\
+$0 + \omega^2(Vt + I) = \omega^2(Vt+I)$\\
+\\
+So we see that $u_e$ is a perfect solution of the discrete equations.
+
+\section*{c)}
+See python program vib\_undamped\_verify\_mms.py
+
+\section*{d)}
+ See python program vib\_undamped\_verify\_mms.py
+
+\section*{e)}
+As we see from the function cubic in the program listed above, we get a residue for the first term of $c\Delta t^3$, where c is the coefficient of the third-degree term.\\
+\\
+A third degree polynomial will therefore not fulfill the discrete equations.
+
+\section*{f)}
+ See python program vib\_undamped\_verify\_mms.py
+
+\section*{g)}
+ See python program vib\_undamped\_verify\_mms.py
+\newpage
+\section*{Exercise 21}
+\section*{a)}
+See python program elastic\_pendulum.py
+\section*{b)}
+See python program elastic\_pendulum.py
+\section*{c)}
+For pure vertical motion, we can simplify the ODE problem:\\
+\\
+$\ppder{x}{t} = 0$\\
+\\
+$\ppder{y}{t} = -\frac{\beta}{1 - \beta}(1 - \frac{\beta}{\sqrt{(y - 1)^2}} - \beta$\\
+\\
+From Wolfram Alpha, $\frac{y-1}{\sqrt{(y - 1)^2}}$ is the sign of $(y-1)$. Here y must be less than 1, since the pendulum is fixed at scaled location y = 1. We therefore get:\\
+\\
+$\ppder{y}{t} = -\frac{\beta}{1 - \beta}(y - 1 + \beta) - \beta = -\frac{\beta y}{1 - \beta} + \frac{\beta}{1 - \beta} - \frac{\beta^2}{1-\beta} - \beta = -\frac{\beta y + \beta - \beta^2 - \beta(1 - \beta)}{1 - \beta} = -\frac{\beta}{1 - \beta}y = -\omega^2y$\\
+\\
+where $\omega = \sqrt(\frac{\beta}{1-\beta})$\\
+\\
+We also get:\\
+\\
+$y(0) = \epsilon\tab y(t) = \epsilon cos(\omega t)$
+\section*{d)}
+See python program elastic\_pendulum.py
+ \end{document}
